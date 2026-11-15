@@ -1,0 +1,11 @@
+{
+  "chain_id": "lab01",
+  "validators": 4,
+  "max_byzantine": 1,
+  "network": {
+    "min_delay_ticks": 1,
+    "max_delay_ticks": 5,
+    "duplicate_probability": 0.0,
+    "drop_probability": 0.0
+  }
+}

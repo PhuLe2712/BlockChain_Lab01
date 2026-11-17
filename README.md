@@ -28,6 +28,15 @@ cmake --build build --config Release
 .\build\Release\lab01.exe
 ctest --test-dir build -C Release --output-on-failure
 ```
+
+`completion_tests` covers T6 (silent proposer timeout) and T7 (Byzantine equivocation).
+On Windows, `ctest` also runs T8 by launching the same demo twice and comparing
+its output/final state hash and `logs/run.log`. You can run T8 directly with:
+
+```powershell
+.scripts\check_determinism.ps1 -Executable .\build\Release\lab01.exe
+```
+
 The demo writes `logs/run.log`. Fixed demo seeds are used only to make this simulator reproducible; they are not suitable for production key generation.
 
 ## Design notes

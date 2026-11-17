@@ -62,3 +62,16 @@ add_test(NAME transaction_replay_tests COMMAND transaction_replay_tests)
 add_executable(network_fault_tests tests/network_fault_tests.cpp)
 target_link_libraries(network_fault_tests PRIVATE blockchain_core)
 add_test(NAME network_fault_tests COMMAND network_fault_tests)
+
+add_executable(completion_tests tests/completion_tests.cpp)
+target_link_libraries(completion_tests PRIVATE blockchain_core)
+add_test(NAME completion_tests COMMAND completion_tests)
+
+if(WIN32)
+    add_test(
+        NAME determinism_test
+        COMMAND powershell -NoProfile -ExecutionPolicy Bypass
+            -File ${CMAKE_CURRENT_SOURCE_DIR}/scripts/check_determinism.ps1
+            -Executable $<TARGET_FILE:lab01>
+    )
+endif()

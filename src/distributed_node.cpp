@@ -219,6 +219,38 @@ void DistributedValidatorNode::startPrevote(
     broadcastVote(vote, tick, network);
 }
 
+void DistributedValidatorNode::onRoundTimeout(
+    const std::string& nextBlockHash,
+    std::uint64_t tick,
+    Network& network
+) {
+    if (finalizedBlock_) {
+        return;
+    }
+    if (!started_) {
+        started_ = true;
+    }
+    if (round_ == UINT64_MAX) {
+        throw std::overflow_error("Consensus round overflow");
+    }
+
+    ++round_;
+    precommitSent_ = false;
+
+    Vote vote;
+    vote.chain_id = chainId_;
+    vote.height = height_;
+    vote.round = round_;
+    vote.phase = VotePhase::PREVOTE;
+    vote.block_hash = nextBlockHash;
+    vote.validator_id = validatorId_;
+    vote.sign(localKey_);
+
+    locallyVoted_.insert({round_, VotePhase::PREVOTE});
+    recordVote(vote);
+    broadcastVote(vote, tick, network);
+}
+
 void DistributedValidatorNode::maybePrecommit(
     std::uint64_t tick,
     Network& network

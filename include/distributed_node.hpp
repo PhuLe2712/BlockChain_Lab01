@@ -26,6 +26,14 @@ public:
         Network& network
     );
 
+    // Called by the simulator when the current round's proposer times out.
+    // The next proposal hash is supplied by the round/proposer scheduler.
+    void onRoundTimeout(
+        const std::string& nextBlockHash,
+        std::uint64_t tick,
+        Network& network
+    );
+
     void processMessages(
         std::uint64_t tick,
         Network& network
